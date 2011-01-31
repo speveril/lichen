@@ -41,7 +41,7 @@ function tileLibraryRender()
         -- inside the library box
         t = math.floor(tileLibraryScroll / 16) * rowsize + (math.floor((vx.mouse.y - 22) / 16) * rowsize) + math.floor(vx.mouse.x / 16)
         
-        local str = "Tile " .. t .. "/" .. (vx.map.tilecount - 1) .. " (" .. tileLibraryScroll .. ")"
+        local str = "Tile " .. t .. "/" .. (vx.map.tilecount - 1)
         local strw = assets.fonts.tiny:TextWidth(str)
         
         x = vx.screen.width - 4 - strw
