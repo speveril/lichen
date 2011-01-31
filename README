@@ -3,8 +3,8 @@
 ----------------------------------------------------------------------------------------------------
 
 Lichen is built by Shamus "Kildorf" Peveril.
-  Blog:  http://www.gearleaf.com/
-  Git:   https://github.com/speveril/lichen
+    Blog:   http://www.gearleaf.com/
+    Git:    https://github.com/speveril/lichen
 
 Free for use and distribtuion by anyone, just don't remove this README when distributing. 
 
@@ -23,6 +23,8 @@ Some day I'll write a bit more on this, but here's a quick run down:
         - Right now you can't actually click these to any effect
         - Hit tab to cycle your current layer
     - Hold space to switch to scrolling mode; click-drag to move around the map
+    - Hit H to turn off the hover-highlight
+    - Hit G to turn off the grid
  
 = Tile library mode =
     - Left or right click tiles to set your current pencil tile
