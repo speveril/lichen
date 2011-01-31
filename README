@@ -1,4 +1,18 @@
  - Lichen -
 Verge3 In-engine Map Editor
 
-More info to come.
+Current Features:
+ - Loads a map (just one)
+ - Scrolling (hold space)
+ - Pencil (1-tile) drawing
+ - VSP viewing (at least, partially)
+ 
+To do:
+ - Map saving
+ - Loading other maps
+ - VSP scrolling
+ - Tile importing
+ - Tile management of some sort
+ - Entity/Zone/Obstruction editing
+ - Brushes, somehow
+
