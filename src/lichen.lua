@@ -1,3 +1,5 @@
+----------------------------------------------------------------------------------------------------
+
 require "tile_library"
 
 ----------------------------------------------------------------------------------------------------
@@ -98,19 +100,6 @@ function setup()
                 if not ui_element and options.tilehilite then drawTileHilite() end
                 tools.pencil.composit:Blit(0, 0)
                 
-                if ui_element and ui_element.tooltip then
-                    local strw = assets.fonts.tiny:TextWidth(ui_element.tooltip)
-                    x = vx.mouse.x + 10
-                    y = vx.mouse.y + 3
-                    w = strw + 2
-                    h = assets.fonts.tiny.height + 3
-
-                    vx.SetOpacity(50)
-                    vx.screen:RectFill(x, y, x + w, y + h, colors.black)
-                    vx.SetOpacity(100)
-                    assets.fonts.tiny:Print(x + 2, y + 2, ui_element.tooltip)
-                end                
-                
                 local tx = math.floor((vx.mouse.x + vx.camera.x) / 16)
                 local ty = math.floor((vx.mouse.y + vx.camera.y) / 16)
                 local str = tx .. "," .. ty
@@ -129,7 +118,7 @@ function setup()
                 tools.pencil.ui_element = ui_element
                 
                 if ui_element then
-                    return assets.tools.default
+                    return assets.tools.default, ui_element.tooltip
                 else
                     return nil
                 end
@@ -221,6 +210,7 @@ function defaultRender()
     -- temporary state switches
     local current_tool = tools.current
     local cursor_override = nil
+    local tooltip = nil
     if vx.key.Space.pressed then current_tool = tools.hand end
 
     -- DRAW --
@@ -228,16 +218,16 @@ function defaultRender()
     if options.grid then drawGrid() end
 
     if tools.current and current_tool.draw then
-        cursor_override = current_tool.draw()
+        cursor_override, tooltip = current_tool.draw()
     end
 
     -- draw the mouse cursor
     if cursor_override then
-        cursor_override:Blit(vx.mouse.x - 8, vx.mouse.y - 8)
+        drawMouse(cursor_override, tooltip)
     elseif current_tool and current_tool.cursor then
-        current_tool.cursor:Blit(vx.mouse.x - 8, vx.mouse.y - 8)
+        drawMouse(current_tool.cursor, tooltip)
     else
-        assets.tools.default:Blit(vx.mouse.x - 8, vx.mouse.y - 8)
+        drawMouse(assets.tools.default, tooltip)
     end
     
     -- INPUT --    
@@ -365,3 +355,28 @@ function drawTileHilite()
     vx.SetOpacity(100)
 end
 
+----------------------------------------------------------------------------------------------------
+
+function drawMouse(cursor, tooltip)
+    cursor:Blit(vx.mouse.x - 8, vx.mouse.y - 8)
+    
+    if tooltip then
+        local strw = assets.fonts.tiny:TextWidth(tooltip)
+        x = vx.mouse.x + 10
+        y = vx.mouse.y + 3
+        w = strw + 2
+        h = assets.fonts.tiny.height + 3
+        
+        if x < 0 then x = 0 end
+        if y < 0 then y = 0 end
+        if x + w > vx.screen.width - 1 then x = vx.screen.width - w - 1 end
+        if y + h > vx.screen.height - 1 then y = vx.screen.height - h - 1 end
+        
+        vx.SetOpacity(85)
+        vx.screen:RectFill(x, y, x + w, y + h, colors.black)
+        vx.screen:Rect(x, y, x + w, y + h, colors.gray)
+        vx.SetOpacity(100)
+        
+        assets.fonts.tiny:Print(x + 2, y + 2, tooltip)
+    end
+end

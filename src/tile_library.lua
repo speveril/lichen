@@ -2,6 +2,8 @@ tileLibraryScroll = 0
 
 function tileLibraryRender()
     local bottom = vx.screen.height - ((vx.screen.height - 22) % 16)
+    local cursor = assets.tools.default
+    local tooltip = nil
 
     vx.SetOpacity(80)
     vx.screen:RectFill(0, 21, vx.screen.width, bottom, colors.black)
@@ -15,11 +17,14 @@ function tileLibraryRender()
     vx.screen:BlitTile(3, 3, tools.pencil.tileleft)
     vx.screen:BlitTile(20, 3, tools.pencil.tileright)
 
+    local rowsize = (vx.screen.width / 16)
+    local screenrows = math.floor((vx.screen.height - 22) / 16)
+    local tilerows = math.ceil(vx.map.tilecount / rowsize)
     local x = 0
     local y = 22
-    local t = 0
+    local t = math.floor(tileLibraryScroll / 16) * rowsize
     
-    for t = 0, vx.map.tilecount do
+    for t = t, vx.map.tilecount do
         vx.screen:BlitTile(x, y, t)
         x = x + 16
         
@@ -34,10 +39,9 @@ function tileLibraryRender()
     
     if mouseIsIn(0, 22, vx.screen.width, bottom) then
         -- inside the library box
-        local rowsize = (vx.screen.width / 16)
-        t = (math.floor((vx.mouse.y - 22) / 16) * rowsize) + math.floor(vx.mouse.x / 16)
+        t = math.floor(tileLibraryScroll / 16) * rowsize + (math.floor((vx.mouse.y - 22) / 16) * rowsize) + math.floor(vx.mouse.x / 16)
         
-        local str = "Tile " .. t .. "/" .. vx.map.tilecount
+        local str = "Tile " .. t .. "/" .. (vx.map.tilecount - 1) .. " (" .. tileLibraryScroll .. ")"
         local strw = assets.fonts.tiny:TextWidth(str)
         
         x = vx.screen.width - 4 - strw
@@ -53,22 +57,33 @@ function tileLibraryRender()
         drawLibraryHilite()
         
         if vx.key.Space.pressed then
-            
+            cursor = assets.tools.hand
+            if vx.mouse.left.pressed or vx.mouse.right.pressed then
+                tileLibraryScroll = tileLibraryScroll + (vx.mouse.lasty - vx.mouse.y)
+                if tileLibraryScroll < 0 then tileLibraryScroll = 0 end
+                if tileLibraryScroll > (tilerows - screenrows) * 16 then
+                    tileLibraryScroll = (tilerows - screenrows) * 16
+                end
+            end
         else
             if vx.mouse.left.pressed then
-                print("Clicked on " .. t)
                 vx.mouse.left.pressed = false
                 tools.pencil.tileleft = t
-                tools.pencil.tileleftimg = vx.map.tileset:ImageShell(0, 16 * tools.pencil.tileleft, 16, 16)
             end
             if vx.mouse.right.pressed then
                 vx.mouse.right.pressed = false
                 tools.pencil.tileright = t
-                tools.pencil.tilerightimg = vx.map.tileset:ImageShell(0, 16 * tools.pencil.tileright, 16, 16)
             end
         end
     else
         -- outside the library box
+        if mouseIsIn(2, 2, 36, 19) then
+            tooltip = "Close tile library"
+            if vx.mouse.left.pressed then
+                vx.mouse.left.pressed = false
+                switchMode("default")
+            end
+        end
     end
     
     if vx.key.Escape.pressed or vx.key.V.pressed then
@@ -77,7 +92,7 @@ function tileLibraryRender()
         switchMode("default")
     end
     
-    assets.tools.default:Blit(vx.mouse.x - 8, vx.mouse.y - 8)
+    drawMouse(cursor, tooltip)
     
     vx.mouse.lastx = vx.mouse.x
     vx.mouse.lasty = vx.mouse.y

@@ -1,18 +1,42 @@
- - Lichen -
-Verge3 In-engine Map Editor
+----------------------------------------------------------------------------------------------------
+- Lichen - Verge3 In-engine Map Editor                                                             -
+----------------------------------------------------------------------------------------------------
 
-Current Features:
- - Loads a map (just one)
- - Scrolling (hold space)
- - Pencil (1-tile) drawing
- - VSP viewing (at least, partially)
+Lichen is built by Shamus "Kildorf" Peveril.
+  Blog:  http://www.gearleaf.com/
+  Git:   https://github.com/speveril/lichen
+
+Free for use and distribtuion by anyone, just don't remove this README when distributing. 
+
+----------------------------------------------------------------------------------------------------
+
+== USING LICHEN ==
+
+Some day I'll write a bit more on this, but here's a quick run down:
+
+= Normal editing mode =
+    - The two larger boxes at the top left are your current tiles
+       - Click on them to open your tile library
+       - Use A/Z to scroll your left click, S/X to scroll your right
+    - The smaller boxes list your layers
+        - Current layer is highlighted in green
+        - Right now you can't actually click these to any effect
+        - Hit tab to cycle your current layer
+    - Hold space to switch to scrolling mode; click-drag to move around the map
  
-To do:
- - Map saving
- - Loading other maps
- - VSP scrolling
- - Tile importing
- - Tile management of some sort
- - Entity/Zone/Obstruction editing
- - Brushes, somehow
+= Tile library mode =
+    - Left or right click tiles to set your current pencil tile
+    - Hold space and click-drag to scroll the visible tiles
 
+----------------------------------------------------------------------------------------------------
+
+== TO DO ==
+
+    - Map saving
+    - Loading maps other than the sample one
+    - Tile importing
+    - Tile management of some sort
+    - Entity/Zone/Obstruction editing
+    - Brushes, somehow
+
+----------------------------------------------------------------------------------------------------
