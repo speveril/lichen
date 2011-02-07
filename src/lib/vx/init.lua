@@ -142,8 +142,6 @@ function vergeclass(name, parent)
             error('The parent class may not be modified after construction.', 2)
         elseif f then
             f(self, value)
-        elseif cls[key] then
-            cls[key] = value
         else
             rawset(self, key, value)
         end
