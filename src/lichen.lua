@@ -1,6 +1,7 @@
 ----------------------------------------------------------------------------------------------------
 
 require "tile_library"
+require "lib.columns"
 
 ----------------------------------------------------------------------------------------------------
 
@@ -290,6 +291,10 @@ function defaultRender()
                 if tools.pencil.currentlayer < 1 then tools.pencil.currentlayer = tools.pencil.currentlayer + #vx.map.renderlist end
             end
         end
+    end
+    
+    if vx.key.F1.pressed then
+        Columns.play();
     end
     
     -- FINISH UP --
