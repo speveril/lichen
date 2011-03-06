@@ -116,3 +116,4 @@ vx/_vergeJoystickButtonInput has error on requirement src/lib/vx/init.lua:45: mo
 vx/_vergeClock imported
 vx/_vergeMusic imported
 Map loaded -- tmp/oworld.map
+You lost!
