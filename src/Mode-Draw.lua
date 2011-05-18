@@ -16,6 +16,7 @@ Mode.add("Draw", function()
             vx.key.V:Unpress()
             Mode.list.VSP:start()
         end)
+        vx.key.F1:Hook(Columns.play)
         
         self.drawCanvas = UIElement(0, 0)
         self.drawCanvas:setSize(vx.screen.width, vx.screen.height)
@@ -34,12 +35,79 @@ Mode.add("Draw", function()
         self.hiliteElement.render = drawTileHilite
         UI.addElement(self.hiliteElement)
         
-        local e
+        self.tileLeftPreview = UIElement(2, 2)
+        self.tileLeftPreview.width = 18;
+        self.tileLeftPreview.height = 18;
+        self.tileLeftPreview:setCursor(assets.cursors.default)
+        self.tileLeftPreview.tooltip = "Open Tile Library"
+        self.tileLeftPreview.render = function(self)
+            vx.screen:Rect(self.x, self.y, self.x + self.width - 1, self.y + self.height - 1, self.borderColor)
+            vx.SetOpacity(50) vx.screen:RectFill(self.x + 1, self.y + 1, self.x + self.width - 2, self.y + self.height - 2, colors.black) vx.SetOpacity(100)
+            vx.screen:BlitTile(self.x + 1, self.y + 1, tools.pencil.tileleft)
+        end
+        UI.addElement(self.tileLeftPreview)
         
-        e = UIElement(vx.screen.width - 17, 3, assets.icons.options)
-        e:setCursor(assets.cursors.default)
-        e:setTooltip("Options")
-        UI.addElement(e)
+        self.tileRightPreview = UIElement(19, 2)
+        self.tileRightPreview.width = 18;
+        self.tileRightPreview.height = 18;
+        self.tileRightPreview:setCursor(assets.cursors.default)
+        self.tileRightPreview.tooltip = "Open Tile Library"
+        self.tileRightPreview.render = function(self)
+            vx.screen:Rect(self.x, self.y, self.x + self.width - 1, self.y + self.height - 1, self.borderColor)
+            vx.SetOpacity(50) vx.screen:RectFill(self.x + 1, self.y + 1, self.x + self.width - 2, self.y + self.height - 2, colors.black) vx.SetOpacity(100)
+            vx.screen:BlitTile(self.x + 1, self.y + 1, tools.pencil.tileright)
+        end
+        UI.addElement(self.tileRightPreview)
+        
+        self.layerControl = UIElement(38, 2)
+        self.layerControl:setCursor(assets.cursors.default)
+        self.layerControl.height = 10
+        self.layerControl.width = 0 -- gets set when rendered since this can fluctuate
+        self.layerControl.render = function(self)
+            local x = self.x
+            local y = self.y
+            local w = 8
+            local h = 8
+            
+            --vx.screen:RectFill(x, y, x + w, y + h, colors.white)
+            --vx.screen:RectFill(x + 1, y + 1, x + w - 1, y + h - 1, colors.black)
+            --assets.fonts.tiny:Print(x + 2, y + 2, '+')
+            --
+            --x = x + w + 2
+            
+            for i,v in ipairs(vx.map.renderlist) do
+                if v == 'O' then
+                    x = x + 2
+                    v = 'Ob'
+                    w = 14
+                elseif v == 'Z' then
+                    v = 'Zo'
+                    w = 14
+                end
+                
+                w = assets.fonts.tiny:TextWidth(v) + 2
+                
+                vx.screen:RectFill(x, y, x + w, y + h, colors.white)
+                if tools.pencil.currentlayer == i then
+                    vx.screen:RectFill(x + 1, y + 1, x + w - 1, y + h - 1, colors.green)
+                else
+                    vx.screen:RectFill(x + 1, y + 1, x + w - 1, y + h - 1, colors.black)
+                end
+                assets.fonts.tiny:Print(x + 2, y + 2, v, vx.screen)
+                
+                x = x + w
+            end
+            
+            self.width = x - self.x
+        end
+        UI.addElement(self.layerControl)
+        
+       
+        
+        local options_element = UIElement(vx.screen.width - 17, 3, assets.icons.options)
+        options_element:setCursor(assets.cursors.default)
+        options_element:setTooltip("Options")
+        UI.addElement(options_element)
         
         if not tools.current then tools.current = tools.pencil end
     end
@@ -48,21 +116,29 @@ Mode.add("Draw", function()
         vx.key.G:Hook("")
         vx.key.H:Hook("")
         vx.key.V:Hook("")
+        vx.key.F1:Hook("")
     end
     
     t.render = function(self)
         -- SETUP --
         -- temporary state switches
         local current_tool = tools.current
-        local cursor_override = nil
+        local current_cursor = nil -- filled below
         local tooltip = nil
-        if vx.key.Space.pressed then tools.current = tools.hand end
+        
+        if vx.key.Space.pressed then
+            current_tool = tools.hand
+        end
         
         -- DRAW --
-        -- draw UI stuff
+        -- set up UI
         if current_tool.draw then
-            cursor_override, tooltip = current_tool.draw()
+            current_cursor, vx.mouse.tooltip = current_tool.draw()
+        else
+            current_cursor, vx.mouse.tooltip = current_tool.cursor, nil
         end
+        
+        self.drawCanvas:setCursor(current_cursor)
         
         -- INPUT --    
         -- tool usage
@@ -215,7 +291,7 @@ Mode.add("Draw", function()
                 if ui_element then
                     return assets.cursors.default, ui_element.tooltip
                 else
-                    return nil
+                    return assets.cursors.pencil, nil
                 end
             end,
             
@@ -258,10 +334,8 @@ Mode.add("Draw", function()
             cursor=assets.cursors.hand,
             
             left = function()
-                if vx.key.Space.pressed then
-                    vx.camera.x = vx.camera.x + (vx.mouse.lastx - vx.mouse.x)
-                    vx.camera.y = vx.camera.y + (vx.mouse.lasty - vx.mouse.y)
-                end
+                vx.camera.x = vx.camera.x + (vx.mouse.lastx - vx.mouse.x)
+                vx.camera.y = vx.camera.y + (vx.mouse.lasty - vx.mouse.y)
             end            
         }
     }

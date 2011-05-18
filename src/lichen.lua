@@ -5,6 +5,8 @@ require "Mode-Draw"
 require "Mode-VSP"
 
 require "UI"
+require "tile_library"
+require "lib.columns"
 
 ----------------------------------------------------------------------------------------------------
 
@@ -63,5 +65,15 @@ end
 function lichenHook_render()
     if Mode.current and Mode.current.render then Mode.current:render() end
     UI.render()
+end
+
+----------------------------------------------------------------------------------------------------
+
+function mouseIsIn(x1, y1, x2, y2)
+    if vx.mouse.x >= x1 and vx.mouse.x <= x2 and vx.mouse.y >= y1 and vx.mouse.y <= y2 then
+        return true
+    else
+        return false
+    end
 end
 
