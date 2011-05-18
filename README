@@ -31,14 +31,3 @@ Some day I'll write a bit more on this, but here's a quick run down:
     - Hold space and click-drag to scroll the visible tiles
 
 ----------------------------------------------------------------------------------------------------
-
-== TO DO ==
-
-    - Map saving
-    - Loading maps other than the sample one
-    - Tile importing
-    - Tile management of some sort
-    - Entity/Zone/Obstruction editing
-    - Brushes, somehow
-
-----------------------------------------------------------------------------------------------------
