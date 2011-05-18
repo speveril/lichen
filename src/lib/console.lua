@@ -7,12 +7,12 @@ console = {
 }
 
 console.toggle = function()
-    if console.target_y < 1 then
-        console.target_y = vx.screen.height / 3
-        console.velocity = 3
+    if console.target_y < 1 or not console.is_open then
+        console.target_y = vx.screen.height / 2
+        console.velocity = 5
     else
         console.target_y = 0
-        console.velocity = -3
+        console.velocity = -5
     end
     
     if not console.is_open then
@@ -22,7 +22,13 @@ console.toggle = function()
 end
 
 console.loop = function()
+    local dt = 0
+    local _timer = vx.clock.timer
+    
     while true do
+        dt = vx.clock.timer - _timer
+        _timer = vx.clock.timer
+        
         vx.Render()
         vx.UpdateControls()
         
@@ -31,7 +37,7 @@ console.loop = function()
         vx.SetOpacity(100)
         vx.screen:Line(0, console.current_y, vx.screen.width, console.current_y, vx.RGB(255, 255, 255))
         
-        console.current_y = console.current_y + console.velocity
+        console.current_y = console.current_y + (console.velocity * dt)
         if console.velocity > 0 and console.current_y > console.target_y then
             console.current_y = console.target_y
             console.velocity = 0

@@ -16,7 +16,6 @@ Mode.add("Draw", function()
             vx.key.V:Unpress()
             Mode.list.VSP:start()
         end)
-        vx.key.F1:Hook(Columns.play)
         
         self.drawCanvas = UIElement(0, 0)
         self.drawCanvas:setSize(vx.screen.width, vx.screen.height)

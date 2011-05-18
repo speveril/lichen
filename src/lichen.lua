@@ -15,7 +15,8 @@ assets = {}
 options = {}
 
 function setup()
-    vx.key.Grave:Hook(function()
+    vx.key.F1:Hook(function()
+        vx.key.Grave:Unpress()
         console.toggle()
     end)
     
