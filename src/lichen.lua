@@ -7,6 +7,7 @@ require "Mode-VSP"
 require "UI"
 require "tile_library"
 require "lib.columns"
+require "lib.console"
 
 ----------------------------------------------------------------------------------------------------
 
@@ -14,6 +15,10 @@ assets = {}
 options = {}
 
 function setup()
+    vx.key.Grave:Hook(function()
+        console.toggle()
+    end)
+    
     assets.cursors = {
         default = vx.Image("res/ui/default-cursor.png"),
         pencil = vx.Image("res/ui/tool-pencil.png"),
