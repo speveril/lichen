@@ -15,6 +15,7 @@ assets = {}
 options = {}
 
 function setup()
+    console.init("src/lib/console_font.png")
     vx.key.F1:Hook(function()
         vx.key.Grave:Unpress()
         console.toggle()
