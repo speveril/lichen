@@ -10,15 +10,18 @@ console = {
     buffer_cursor = 0,
     buffer_size = 12,
     
-    font = vx.Font(0)
+    font = vx.Font(0),
+    
+    key = vx.key.F1,
+    path = string.gsub(string.gsub(string.gsub(debug.getinfo(1,'S').source, "\\", "/"), "console.lua", ""), "@", "")
 }
 
-console.init = function(font)
-    if font then
-        console.font = vx.Font(font)
-        console.font:EnableVariableWidth()
-    end
-end
+console.font = vx.Font(console.path .. "console_font.png")
+console.font:EnableVariableWidth()
+console.key:Hook(function()
+    console.key:Unpress()
+    console.toggle()
+end)
 
 console.toggle = function()
     v3.FlushKeyBuffer()

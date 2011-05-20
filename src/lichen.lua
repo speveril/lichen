@@ -15,12 +15,6 @@ assets = {}
 options = {}
 
 function setup()
-    console.init("src/lib/console_font.png")
-    vx.key.F1:Hook(function()
-        vx.key.Grave:Unpress()
-        console.toggle()
-    end)
-    
     assets.cursors = {
         default = vx.Image("res/ui/default-cursor.png"),
         pencil = vx.Image("res/ui/tool-pencil.png"),
