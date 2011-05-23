@@ -6,8 +6,8 @@ require "Mode-VSP"
 
 require "UI"
 require "tile_library"
-require "lib.columns"
-require "lib.console"
+require "columns"
+require "console"
 
 ----------------------------------------------------------------------------------------------------
 

@@ -8,12 +8,13 @@ console = {
     buffer_output = "",
     buffer_input = "",
     buffer_cursor = 0,
-    buffer_size = 12,
+    buffer_size = 20,
     
     font = vx.Font(0),
     
     key = vx.key.F1,
-    path = string.gsub(string.gsub(string.gsub(debug.getinfo(1,'S').source, "\\", "/"), "console.lua", ""), "@", "")
+    version_string = 'VergeConsole v0.01',
+    path = string.gsub(string.gsub(string.gsub(debug.getinfo(1,'S').source, "\\", "/"), "init.lua", ""), "@", "")
 }
 
 console.font = vx.Font(console.path .. "console_font.png")
@@ -151,10 +152,23 @@ console.do_command = function(cmd_string)
     if command == 'exit' then
         vx.Exit()
     elseif command == 'set' then
-        console.output('setting...')
+        local varname = ''
+        local newvalue = ''
+        local i = 5
+        
+        while i < string.len(cmd_string) do
+            
+        end
     elseif command == 'help' then
-        console.output('lol')
+        console.output('Current commands:')
+        --console.output(' set <variable> <new value>')
+        console.output(' exit')
+    elseif command == 'look' then
+        console.output('You are in a dark room. You are likely to be eaten\nby a grue.')
     else
         console.output('Command not recognized. Try "help".')
     end
+    console.output("")
 end
+
+console.output('Console enabled. ' .. console.version_string .. '\nType "help" for a list of commands.\n')
