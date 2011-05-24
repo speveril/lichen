@@ -147,26 +147,37 @@ end
 console.do_command = function(cmd_string)
     console.output("> " .. cmd_string)
     
-    words = {}
-    for word in string.gmatch(cmd_string, '(%w+)') do
+    local words = {}
+    for word in string.gmatch(cmd_string, '([%S]+)') do
         table.insert(words, word)
     end
+
+    local command = words[1]
+    table.remove(words, 1)
     
-    if words[1] == 'exit' then
-        vx.Exit()
-    elseif words[1] == 'set' then
-        local varname = ''
-        local newvalue = ''
-    elseif words[1] == 'help' then
-        console.output('Current commands:')
-        --console.output(' set <variable> <new value>')
-        console.output(' exit')
-    elseif words[1] == 'look' then
-        console.output('You are in a dark room. You are likely to be eaten\nby a grue.')
+    if console.commands[command] then
+        console.commands[command](unpack(words))
     else
         console.output('Command not recognized. Try "help".')
     end
     console.output("")
 end
+
+console.commands = {
+    help = function()
+        console.output('Current commands:')
+        --console.output(' set <variable> <new value>')
+        console.output(' exit')
+    end,
+    look = function()
+        console.output('You are in a dark room. You are likely to be eaten\nby a grue.')
+    end,
+    set = function(varname, newval)
+        console.output("You want to set '" .. varname .. "' to '" .. newval .. "'")
+    end,
+    exit = function()
+        vx.Exit()
+    end
+}
 
 console.output('Console enabled. ' .. console.version_string .. '\nType "help" for a list of commands.\n')
