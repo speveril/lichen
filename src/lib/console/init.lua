@@ -147,23 +147,21 @@ end
 console.do_command = function(cmd_string)
     console.output("> " .. cmd_string)
     
-    command = string.match(cmd_string, '%w+')
+    words = {}
+    for word in string.gmatch(cmd_string, '(%w+)') do
+        table.insert(words, word)
+    end
     
-    if command == 'exit' then
+    if words[1] == 'exit' then
         vx.Exit()
-    elseif command == 'set' then
+    elseif words[1] == 'set' then
         local varname = ''
         local newvalue = ''
-        local i = 5
-        
-        while i < string.len(cmd_string) do
-            
-        end
-    elseif command == 'help' then
+    elseif words[1] == 'help' then
         console.output('Current commands:')
         --console.output(' set <variable> <new value>')
         console.output(' exit')
-    elseif command == 'look' then
+    elseif words[1] == 'look' then
         console.output('You are in a dark room. You are likely to be eaten\nby a grue.')
     else
         console.output('Command not recognized. Try "help".')
