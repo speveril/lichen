@@ -13,6 +13,7 @@ console = {
     font = vx.Font(0),
     
     key = vx.key.F1,
+    prompt = "# ",
     version_string = 'VergeConsole v0.01',
     path = string.gsub(string.gsub(string.gsub(debug.getinfo(1,'S').source, "\\", "/"), "init.lua", ""), "@", "")
 }
@@ -82,7 +83,7 @@ console.loop = function()
         
         console.process_input()
         
-        input_ln = "> " .. console.buffer_input
+        input_ln = console.prompt .. console.buffer_input
         console.font:Print(0, console.current_y - console.font.height, input_ln)
         if math.floor(vx.clock.timer / 15) % 2 == 0 then
             console.font:Print(console.font:TextWidth(string.sub(input_ln, 1, console.buffer_cursor + 2)), console.current_y - console.font.height, "_")
@@ -145,7 +146,7 @@ console.output = function(str)
 end
 
 console.do_command = function(cmd_string)
-    console.output("> " .. cmd_string)
+    console.output(console.prompt .. cmd_string)
     
     local words = {}
     for word in string.gmatch(cmd_string, '([%S]+)') do
@@ -166,14 +167,86 @@ end
 console.commands = {
     help = function()
         console.output('Current commands:')
-        --console.output(' set <variable> <new value>')
-        console.output(' exit')
+        console.output('   get <variable>')
+        console.output('   set <variable> <new value>')
+        console.output('   exit')
     end,
     look = function()
         console.output('You are in a dark room. You are likely to be eaten\nby a grue.')
     end,
-    set = function(varname, newval)
-        console.output("You want to set '" .. varname .. "' to '" .. newval .. "'")
+    get = function(varname)
+        if not varname then
+            console.output("Proper usage: get <variable>")
+            return
+        end
+        local t = _G
+        for x in string.gmatch(varname, '(%w+)') do
+            if type(t) == 'table' and t[x] then
+                t = t[x]
+            else
+                console.output("Couldn't parse " .. varname .. ".")
+                return
+            end
+        end
+        if type(t) == 'string' then
+            console.output("-> \"" .. tostring(t) .."\"")
+        else
+            console.output("-> " .. tostring(t))
+        end
+        if type(t) == 'table' then
+            local count = 0
+            for k,v in pairs(t) do
+                count = count + 1
+                if count > console.buffer_size - 5 then console.output("  -> ...") break end
+                if type(v) == 'string' then
+                    console.output("  -> " .. tostring(k) .. ": \"" .. tostring(v) .. "\"")
+                else
+                    console.output("  -> " .. tostring(k) .. ": " .. tostring(v))
+                end
+            end
+        end
+    end,
+    set = function(varname, newval, ...)
+        if not varname or not newval then
+            console.output("Proper usage: set <variable> <new value>")
+            return
+        end
+        
+        local t = _G
+        local last = nil
+        local last_key = nil
+        for x in string.gmatch(varname, '(%w+)') do
+            last = t
+            last_key = x
+            
+            if type(t) == 'table' and t[x] then
+                t = t[x]
+            else
+                break
+            end
+        end
+        
+        local args = {...}
+        if #args > 0 then
+            newval = newval .. " " .. table.concat({...}, " ")
+        end
+        
+        if string.match(newval, '^"(.*)"$') then
+            local inner = string.match(newval, '^"(.*)"$')
+            newval = inner
+        elseif string.match(newval, "^%d+$") then
+            newval = tonumber(newval)
+        elseif newval == "{}" then
+            newval = {}
+        end
+        
+        last[last_key] = newval
+        
+        if type(last[last_key]) == 'string' then
+            console.output("-> \"" .. tostring(last[last_key]) .."\"")
+        else
+            console.output("-> " .. tostring(last[last_key]))
+        end
     end,
     exit = function()
         vx.Exit()
