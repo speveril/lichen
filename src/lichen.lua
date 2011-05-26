@@ -46,8 +46,8 @@ end
 ----------------------------------------------------------------------------------------------------
 
 function lichen.start()
-    v3.HookMapLoad(lichenHook_mapLoad)
-    v3.HookRetrace(lichenHook_render)
+    v3.HookMapLoad(lichen.hooks.mapLoad)
+    v3.HookRetrace(lichen.hooks.render)
     
     Mode.list.Draw:start()
     
@@ -56,20 +56,22 @@ end
 
 ----------------------------------------------------------------------------------------------------
 
-function lichenHook_mapLoad()
-    print("Map loaded -- " .. vx.map.filename)
-    vx.camera:TargetNothing()
+lichen.hooks = {
+    mapLoad = function()
+        print("Map loaded -- " .. vx.map.filename)
+        vx.camera:TargetNothing()
+        
+        vx.map.tilecount = math.floor(vx.map.tileset.height / 16) -- floor() shouldn't be necessary, but just in case
+        vx.map.renderlist = v3.curmap.rstring:Explode(",", true)
+        table.insert(vx.map.renderlist, 'O')
+        table.insert(vx.map.renderlist, 'Z')
+    end,
     
-    vx.map.tilecount = math.floor(vx.map.tileset.height / 16) -- floor() shouldn't be necessary, but just in case
-    vx.map.renderlist = v3.curmap.rstring:Explode(",", true)
-    table.insert(vx.map.renderlist, 'O')
-    table.insert(vx.map.renderlist, 'Z')
-end
-
-function lichenHook_render()
-    if Mode.current and Mode.current.render then Mode.current:render() end
-    UI.render()
-end
+    render = function()
+        if Mode.current and Mode.current.render then Mode.current:render() end
+        UI.render()
+    end
+}
 
 ----------------------------------------------------------------------------------------------------
 
