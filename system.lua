@@ -11,5 +11,5 @@ function autoexec()
     lichen.setup()
     
     -- start the editor proper
-    start()
+    lichen.start()
 end

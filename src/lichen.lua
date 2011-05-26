@@ -45,7 +45,7 @@ end
 
 ----------------------------------------------------------------------------------------------------
 
-function start()
+function lichen.start()
     v3.HookMapLoad(lichenHook_mapLoad)
     v3.HookRetrace(lichenHook_render)
     
