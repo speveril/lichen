@@ -6,7 +6,6 @@ require "Mode-VSP"
 
 require "UI"
 require "tile_library"
-require "columns"
 require "console"
 
 ----------------------------------------------------------------------------------------------------

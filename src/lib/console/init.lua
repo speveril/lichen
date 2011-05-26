@@ -1,3 +1,5 @@
+require "console.columns"
+
 console = {
     is_open = false,
     
@@ -17,6 +19,7 @@ console = {
     version_string = 'VergeConsole v0.02',
     path = string.gsub(string.gsub(string.gsub(debug.getinfo(1,'S').source, "\\", "/"), "init.lua", ""), "@", "")
 }
+
 
 console.font = vx.Font(console.path .. "console_font.png")
 console.font:EnableVariableWidth()
@@ -170,6 +173,7 @@ console.commands = {
         console.output('Current commands:')
         console.output('   get <variable>')
         console.output('   set <variable> <new value>')
+        console.output('   columns')
         console.output('   exit')
     end,
     look = function()
@@ -248,6 +252,9 @@ console.commands = {
         else
             console.output("-> " .. tostring(last[last_key]))
         end
+    end,
+    columns = function()
+        Columns.play()
     end,
     exit = function()
         vx.Exit()
