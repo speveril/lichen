@@ -8,7 +8,7 @@ function autoexec()
     vx.SetResolution(320, 240)
     
     -- do loading
-    setup()
+    lichen.setup()
     
     -- start the editor proper
     start()

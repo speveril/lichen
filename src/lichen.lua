@@ -11,10 +11,13 @@ require "console"
 
 ----------------------------------------------------------------------------------------------------
 
+lichen = {}
+
+-- this stuff should migrate into lichen
 assets = {}
 options = {}
 
-function setup()
+function lichen.setup()
     assets.cursors = {
         default = vx.Image("res/ui/default-cursor.png"),
         pencil = vx.Image("res/ui/tool-pencil.png"),
