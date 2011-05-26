@@ -143,6 +143,7 @@ end
 
 console.output = function(str)
     console.buffer_output = console.buffer_output .. str .. "\n"
+    console.buffer_output = string.sub(console.buffer_output, -1000)
 end
 
 console.do_command = function(cmd_string)
