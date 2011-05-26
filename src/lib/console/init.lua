@@ -12,9 +12,9 @@ console = {
     
     font = vx.Font(0),
     
-    key = vx.key.F1,
+    key = vx.key.F10,
     prompt = "# ",
-    version_string = 'VergeConsole v0.01',
+    version_string = 'VergeConsole v0.02',
     path = string.gsub(string.gsub(string.gsub(debug.getinfo(1,'S').source, "\\", "/"), "init.lua", ""), "@", "")
 }
 
