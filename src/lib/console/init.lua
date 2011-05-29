@@ -120,7 +120,6 @@ console.process_input = function()
    
     for i = 1,len do
         b = string.byte(inp, i)
-        print(b)
         
         if b == 8 then -- backspace
             buf_before = string.sub(buf_before, 1, -2)
@@ -128,7 +127,7 @@ console.process_input = function()
         elseif b == 127 then -- delete
             buf_after = string.sub(buf_after, 2)
         elseif b == 10 then -- enter
-            -- do nothing
+            -- do nothing, is handled below
         else
             buf_mid = buf_mid .. string.char(string.byte(inp, i))
             console.buffer_cursor = console.buffer_cursor + 1
@@ -188,7 +187,7 @@ console.commands = {
             return
         end
         local t = _G
-        for x in string.gmatch(varname, '(%w+)') do
+        for x in string.gmatch(varname, '([%w_]+)') do
             if type(t) == 'table' and t[x] then
                 t = t[x]
             else
@@ -223,7 +222,7 @@ console.commands = {
         local t = _G
         local last = nil
         local last_key = nil
-        for x in string.gmatch(varname, '(%w+)') do
+        for x in string.gmatch(varname, '([%w_]+)') do
             last = t
             last_key = x
             
