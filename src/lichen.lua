@@ -53,7 +53,7 @@ function lichen.start()
     
     Mode.list.Draw:start()
     
-    v3.Map("tmp/oworld.map")
+    lichen.loadMap("tmp/oworld.map")
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -71,6 +71,10 @@ function lichen.saveMap(filename, vspname)
     
     f = vx.File(vsppath, vx.FileMode.Write)
     v3.FileWriteVSP(f.file_handle)
+end
+
+function lichen.loadMap(filename)
+    v3.Map(filename)
 end
 
 ----------------------------------------------------------------------------------------------------
