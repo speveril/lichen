@@ -46,6 +46,7 @@ vergeclass "_vergeMap"
 	_vergeMap._property('height', function(self) return v3.curmap.h end)
 	_vergeMap._property('title', function(self) return v3.curmap.name end)
 	_vergeMap._property('filename', function(self) return v3.curmap.path end, function(self, value) self:Switch(tostring(value)) end)
+        _vergeMap._property('vspname', function(self) return v3.curmap.savevsp end)
 	_vergeMap._property('start_x', function(self) return v3.curmap.startx end)
 	_vergeMap._property('start_y', function(self) return v3.curmap.starty end)
 	_vergeMap._property('render_string', function(self) return v3.curmap.rstring end)

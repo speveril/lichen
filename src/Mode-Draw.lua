@@ -152,17 +152,7 @@ Mode.add("Draw", function()
                 end
                 if vx.key.S.pressed then
                     vx.key.S.pressed = false
-                    
-                    local filepath = v3.curmap.path
-                    local pathchunks = filepath:Explode("[\\/]")
-                    pathchunks[#pathchunks] = v3.curmap.savevsp
-                    local vsppath = table.concat(pathchunks, "/")
-                    
-                    local f = vx.File(filepath, vx.FileMode.Write)
-                    v3.FileWriteMap(f.file_handle)
-                    
-                    f = vx.File(vsppath, vx.FileMode.Write)
-                    v3.FileWriteVSP(f.file_handle)
+                    lichen.saveMap(lichen.current_map)
                 end
             else
                 if vx.key.A.pressed then

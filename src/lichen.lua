@@ -10,7 +10,10 @@ require "console"
 
 ----------------------------------------------------------------------------------------------------
 
-lichen = {}
+lichen = {
+    current_map = "",
+    current_vsp = ""
+}
 
 -- this stuff should migrate into lichen
 assets = {}
@@ -55,9 +58,31 @@ end
 
 ----------------------------------------------------------------------------------------------------
 
+function lichen.saveMap(filename, vspname)
+    if not filename then filename = lichen.current_map end
+    if not vspname then vspname = lichen.current_vsp end
+    
+    local pathchunks = filename:Explode("[\\/]")
+    pathchunks[#pathchunks] = vspname
+    local vsppath = table.concat(pathchunks, "/")
+    
+    local f = vx.File(filename, vx.FileMode.Write)
+    v3.FileWriteMap(f.file_handle)
+    
+    f = vx.File(vsppath, vx.FileMode.Write)
+    v3.FileWriteVSP(f.file_handle)
+end
+
+----------------------------------------------------------------------------------------------------
+
 lichen.hooks = {
     mapLoad = function()
         print("Map loaded -- " .. vx.map.filename)
+        print("VSP loaded -- " .. vx.map.vspname)
+        
+        lichen.current_map = vx.map.filename
+        lichen.current_vsp = vx.map.vspname
+        
         vx.camera:TargetNothing()
         
         vx.map.tilecount = math.floor(vx.map.tileset.height / 16) -- floor() shouldn't be necessary, but just in case

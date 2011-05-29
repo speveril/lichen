@@ -20,7 +20,6 @@ console = {
     path = string.gsub(string.gsub(string.gsub(debug.getinfo(1,'S').source, "\\", "/"), "init.lua", ""), "@", "")
 }
 
-
 console.font = vx.Font(console.path .. "console_font.png")
 console.font:EnableVariableWidth()
 console.key:Hook(function()
@@ -85,7 +84,7 @@ console.loop = function()
         console.font:Print(0, y, console.buffer_output)
         
         console.process_input()
-        
+
         input_ln = console.prompt .. console.buffer_input
         console.font:Print(0, console.current_y - console.font.height, input_ln)
         if math.floor(vx.clock.timer / 15) % 2 == 0 then
@@ -121,6 +120,7 @@ console.process_input = function()
    
     for i = 1,len do
         b = string.byte(inp, i)
+        print(b)
         
         if b == 8 then -- backspace
             buf_before = string.sub(buf_before, 1, -2)
@@ -128,10 +128,7 @@ console.process_input = function()
         elseif b == 127 then -- delete
             buf_after = string.sub(buf_after, 2)
         elseif b == 10 then -- enter
-            console.do_command(buf_before..buf_mid..buf_after)
-            buf_before = ""
-            buf_mid = ""
-            buf_after = ""
+            -- do nothing
         else
             buf_mid = buf_mid .. string.char(string.byte(inp, i))
             console.buffer_cursor = console.buffer_cursor + 1
@@ -139,6 +136,12 @@ console.process_input = function()
     end
     
     console.buffer_input = buf_before .. buf_mid .. buf_after
+    
+    if vx.key.Enter.pressed and #console.buffer_input > 0 then
+        console.do_command(console.buffer_input)
+        console.buffer_input = ""
+    end
+    
     
     if console.buffer_cursor < 0 then console.buffer_cursor = 0 end
     if console.buffer_cursor > string.len(console.buffer_input) then console.buffer_cursor = string.len(console.buffer_input) end
