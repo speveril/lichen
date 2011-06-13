@@ -12,7 +12,6 @@ vergeclass "Mode" do
             Mode.list[k].name = k
         end
         
-        
         Mode.built = true
     end
     
@@ -40,6 +39,8 @@ vergeclass "Mode" do
         if Mode.current and Mode.current.teardown then Mode.current:teardown() end
         vx.mouse.cursor = nil
         vx.mouse.tooltip = nil
+        
+        UI.clear()
         
         Mode.current = self
         if Mode.current and Mode.current.setup then Mode.current:setup() end

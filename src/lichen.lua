@@ -12,7 +12,11 @@ require "console"
 
 lichen = {
     current_map = "",
-    current_vsp = ""
+    current_vsp = "",
+    load_type = nil,
+    
+    TYPE_NEW = 1,
+    TYPE_LOAD = 2
 }
 
 -- this stuff should migrate into lichen
@@ -53,7 +57,16 @@ function lichen.start()
     
     Mode.list.Draw:start()
     
+    --lichen.newMap(25, 25)
     lichen.loadMap("tmp/oworld.map")
+end
+
+----------------------------------------------------------------------------------------------------
+
+function lichen.newMap(width, height)
+    lichen.load_type = lichen.TYPE_NEW
+    lichen.newmap = { w = width, h = height }
+    v3.Map("res/map/empty.map")
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -73,7 +86,10 @@ function lichen.saveMap(filename, vspname)
     v3.FileWriteVSP(f.file_handle)
 end
 
+----------------------------------------------------------------------------------------------------
+
 function lichen.loadMap(filename)
+    lichen.load_type = lichen.TYPE_LOAD
     v3.Map(filename)
 end
 
@@ -81,6 +97,11 @@ end
 
 lichen.hooks = {
     mapLoad = function()
+        if lichen.load_type == lichen.TYPE_NEW then
+            v3.map.ResizeLayer(0, lichen.new_map.w, lichen.new_map.h, 0, 0)
+            v3.map.ResizeLayer(1, lichen.new_map.w, lichen.new_map.h, 0, 0)
+        end
+        
         print("Map loaded -- " .. vx.map.filename)
         print("VSP loaded -- " .. vx.map.vspname)
         

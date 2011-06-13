@@ -5,7 +5,7 @@ require "lichen" -- the core editor scripts
 function autoexec()
     -- misc. set up
     vx.SetAppName('Lichen Map Editor')
-    vx.SetResolution(320, 240)
+    vx.SetResolution(640, 480)
     
     -- do loading
     lichen.setup()
