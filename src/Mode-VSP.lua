@@ -1,7 +1,37 @@
 Mode.add("VSP", function()
     local t = {}
-    
     t.scroll = 0
+    
+    t.setup = function(self)
+        self.tileLeftPreview = UIElement(2, 2)
+        self.tileLeftPreview.width = 18;
+        self.tileLeftPreview.height = 18;
+        self.tileLeftPreview:setCursor(assets.cursors.default)
+        self.tileLeftPreview.tooltip = "Close tile library"
+        self.tileLeftPreview.render = function(self)
+            vx.screen:Rect(self.x, self.y, self.x + self.width - 1, self.y + self.height - 1, self.borderColor)
+            vx.SetOpacity(50) vx.screen:RectFill(self.x + 1, self.y + 1, self.x + self.width - 2, self.y + self.height - 2, colors.black) vx.SetOpacity(100)
+            vx.screen:BlitTile(self.x + 1, self.y + 1, tools.pencil.tileleft)
+        end
+        UI.addElement(self.tileLeftPreview)
+        
+        self.tileRightPreview = UIElement(19, 2)
+        self.tileRightPreview.width = 18;
+        self.tileRightPreview.height = 18;
+        self.tileRightPreview:setCursor(assets.cursors.default)
+        self.tileRightPreview.tooltip = "Close tile library"
+        self.tileRightPreview.render = function(self)
+            vx.screen:Rect(self.x, self.y, self.x + self.width - 1, self.y + self.height - 1, self.borderColor)
+            vx.SetOpacity(50) vx.screen:RectFill(self.x + 1, self.y + 1, self.x + self.width - 2, self.y + self.height - 2, colors.black) vx.SetOpacity(100)
+            vx.screen:BlitTile(self.x + 1, self.y + 1, tools.pencil.tileright)
+        end
+        UI.addElement(self.tileRightPreview)
+        
+        self.importButton = UIButton(38, 2, "Import: Image")
+        self.importButton.tooltip = "Import tiles from image"
+        UI.addElement(self.importButton)
+    end
+    
     t.render = function(self)
         local bottom = vx.screen.height - ((vx.screen.height - 22) % 16)
         local cursor = assets.cursors.default
@@ -12,13 +42,7 @@ Mode.add("VSP", function()
         vx.SetOpacity(100)
         vx.screen:Line(0, 21, vx.screen.width, 21, colors.white)
         vx.screen:Line(0, bottom, vx.screen.width, bottom, colors.white)
-    
-        vx.screen:RectFill(2, 2, 36, 19, colors.black)
-        vx.screen:Rect(2, 2, 36, 19, colors.white)
-        vx.screen:Line(19, 2, 19, 19, colors.white)
-        vx.screen:BlitTile(3, 3, tools.pencil.tileleft)
-        vx.screen:BlitTile(20, 3, tools.pencil.tileright)
-    
+        
         local rowsize = (vx.screen.width / 16)
         local screenrows = math.floor((vx.screen.height - 22) / 16)
         local tilerows = math.ceil(vx.map.tilecount / rowsize)
@@ -80,11 +104,15 @@ Mode.add("VSP", function()
         else
             -- outside the library box
             if UI.mouseIsIn(2, 2, 36, 19) then
-                tooltip = "Close tile library"
                 if vx.mouse.left.pressed then
                     vx.mouse.left.pressed = false
                     Mode.list.Draw:start()
                 end
+            end
+            
+            if vx.mouse.left.pressed and self.importButton:mouseIsIn() then
+                local file = "tmp/oworld_tiles.png" -- get this via file dialog
+                local img = vx.Image(file)
             end
         end
         
@@ -101,7 +129,6 @@ Mode.add("VSP", function()
     return Mode(t)
 end)
 
-    
 function drawLibraryHilite()
     if vx.mouse.y < 22 then return end
     

@@ -71,4 +71,11 @@ vergeclass "UIElement" do
             self.img:Blit(x + self.borderWidth, y + self.borderWidth)
         end
     end
+    
+    function UIElement:mouseIsIn()
+        if UI.mouseIsIn(self.x, self.y, self.x + self.width, self.y + self.height) then
+            return true
+        end
+        return false
+    end
 end

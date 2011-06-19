@@ -38,7 +38,7 @@ Mode.add("Draw", function()
         self.tileLeftPreview.width = 18;
         self.tileLeftPreview.height = 18;
         self.tileLeftPreview:setCursor(assets.cursors.default)
-        self.tileLeftPreview.tooltip = "Open Tile Library"
+        self.tileLeftPreview.tooltip = "Open tile library"
         self.tileLeftPreview.render = function(self)
             vx.screen:Rect(self.x, self.y, self.x + self.width - 1, self.y + self.height - 1, self.borderColor)
             vx.SetOpacity(50) vx.screen:RectFill(self.x + 1, self.y + 1, self.x + self.width - 2, self.y + self.height - 2, colors.black) vx.SetOpacity(100)
@@ -50,7 +50,7 @@ Mode.add("Draw", function()
         self.tileRightPreview.width = 18;
         self.tileRightPreview.height = 18;
         self.tileRightPreview:setCursor(assets.cursors.default)
-        self.tileRightPreview.tooltip = "Open Tile Library"
+        self.tileRightPreview.tooltip = "Open tile library"
         self.tileRightPreview.render = function(self)
             vx.screen:Rect(self.x, self.y, self.x + self.width - 1, self.y + self.height - 1, self.borderColor)
             vx.SetOpacity(50) vx.screen:RectFill(self.x + 1, self.y + 1, self.x + self.width - 2, self.y + self.height - 2, colors.black) vx.SetOpacity(100)
@@ -215,7 +215,7 @@ Mode.add("Draw", function()
                 tools.pencil.composit:BlitTile(20, 3, tools.pencil.tileright)
                 
                 if UI.mouseIsIn(2, 2, 36, 19) then
-                    ui_element = { type='tile', which=0, tooltip="Open Tile Library"}
+                    ui_element = { type='tile', which=0, tooltip="Open tile Library"}
                 end
                 
                 local x = 38
