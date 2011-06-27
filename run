@@ -1,3 +1,0 @@
-cp ../v3fork/redist/verge.exe ./verge.exe
-../v3fork/redist/upx.exe ./verge.exe
-./verge

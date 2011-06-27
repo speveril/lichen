@@ -58,7 +58,8 @@ function lichen.start()
     Mode.list.Draw:start()
     
     --lichen.newMap(25, 25)
-    lichen.loadMap("tmp/oworld.map")
+    --lichen.loadMap("tmp/oworld.map")
+    lichen.newMap(25, 25)
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -98,8 +99,8 @@ end
 lichen.hooks = {
     mapLoad = function()
         if lichen.load_type == lichen.TYPE_NEW then
-            v3.map.ResizeLayer(0, lichen.new_map.w, lichen.new_map.h, 0, 0)
-            v3.map.ResizeLayer(1, lichen.new_map.w, lichen.new_map.h, 0, 0)
+            v3.ResizeLayer(0, lichen.newmap.w, lichen.newmap.h, 0, 0)
+            v3.ResizeLayer(1, lichen.newmap.w, lichen.newmap.h, 0, 0)
         end
         
         print("Map loaded -- " .. vx.map.filename)

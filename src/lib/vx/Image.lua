@@ -222,7 +222,6 @@ vergeclass "Image"
 	end
 	
 	function Image:ImageShell(x, y, w, h)
-		print "imageshell"
 		return vx.Image(v3.ImageShell(x, y, w, h, self.image_handle))
 	end
 	

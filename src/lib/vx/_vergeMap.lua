@@ -51,6 +51,11 @@ vergeclass "_vergeMap"
 	_vergeMap._property('start_y', function(self) return v3.curmap.starty end)
 	_vergeMap._property('render_string', function(self) return v3.curmap.rstring end)
 	_vergeMap._property('music_filename', function(self) return v3.curmap.music end)
+        
+        function _vergeMap:SetTileset(img)
+            v3.curmap.tileset = img.image_handle
+            _tileset = nil
+        end
 
 	-- Switches the map.
 	-- Unlike VC, Map will not break from loops automatically.
