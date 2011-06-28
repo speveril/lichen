@@ -111,24 +111,27 @@ Mode.add("VSP", function()
             end
             
             if vx.mouse.left.pressed and self.importButton:mouseIsIn() then
-                local file = "tmp/oworld_tiles.png" -- get this via file dialog
-                local img = vx.Image(file)
-                local rows = math.floor(img.height / 16)
-                local cols = math.floor(img.width / 16)
-                local num_tiles = rows * cols
-                local new_tileset = vx.Image(16, num_tiles * 16)
-                local i = 0
-                local x, y
-                
-                for y = 0, (rows - 1) do
-                    for x = 0, (cols - 1) do
-                        img:ImageShell(x * 16, y * 16, 16, 16):FullBlit(0, i * 16, new_tileset)
-                        i = i + 1
-                    end                    
+                --local file = "tmp/oworld_tiles.png" -- get this via file dialog
+                local file = Dialog.File("vsp_file", "Choose an image to import...")
+                if file then
+                    local img = vx.Image(file)
+                    local rows = math.floor(img.height / 16)
+                    local cols = math.floor(img.width / 16)
+                    local num_tiles = rows * cols
+                    local new_tileset = vx.Image(16, num_tiles * 16)
+                    local i = 0
+                    local x, y
+                    
+                    for y = 0, (rows - 1) do
+                        for x = 0, (cols - 1) do
+                            img:ImageShell(x * 16, y * 16, 16, 16):FullBlit(0, i * 16, new_tileset)
+                            i = i + 1
+                        end                    
+                    end
+                    
+                    vx.map:SetTileset(new_tileset)
+                    vx.map.tilecount = num_tiles
                 end
-                
-                vx.map:SetTileset(new_tileset)
-                vx.map.tilecount = num_tiles
             end
         end
         

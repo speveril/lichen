@@ -11,6 +11,7 @@ vergeclass "UI" do
             black = vx.RGB(0, 0, 0),
             white = vx.RGB(255, 255, 255),
             gray = vx.RGB(192, 192, 192),
+            darkgray = vx.RGB(84, 84, 84),
             green = vx.RGB(0, 192, 0),
             transparent = vx.RGB(255, 0, 255)
         }

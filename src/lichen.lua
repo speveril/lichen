@@ -4,6 +4,9 @@ require "Mode"
 require "Mode-Draw"
 require "Mode-VSP"
 
+require "Dialog"
+require "Dialog-File"
+
 require "UI"
 require "tile_library"
 require "console"
@@ -32,7 +35,8 @@ function lichen.setup()
     assets.fonts = {
         system = vx.Font(0),
         default = vx.Font("res/font/console.png"),
-        tiny = vx.Font("res/font/5x5.png")
+        tiny = vx.Font("res/font/5x5.png"),
+        tinydark = vx.Font("res/font/5x5_dark.png")
     }
     assets.fonts.default:EnableVariableWidth()
     assets.icons = {
